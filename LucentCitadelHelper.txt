@@ -1,0 +1,19 @@
+## Title: Lucent Citadel Helper
+## Description: Additional alerts for Lucent Citadel (based on Qcell's Dreadsail Reef Helper)
+## Author: @necco889
+## DependsOn: CombatAlerts LibAddonMenu-2.0
+## OptionalDependsOn: OdySupportIcons 
+## Version: 0.0.3
+## APIVersion: 101035 101036
+## SavedVariables: LucentCitadelHelperSavedVariables
+
+LucentCitadelHelper.lua
+LucentCitadelHelperData.lua
+LucentCitadelHelperUI.lua
+LucentCitadelHelperUtil.lua
+LucentCitadelHelperMenu.lua
+boss/Trash.lua
+boss/Zilyesset.lua
+boss/Orphic.lua
+boss/Xoryn.lua
+LucentCitadelHelper.xml
