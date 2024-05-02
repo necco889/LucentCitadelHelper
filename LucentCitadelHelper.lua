@@ -2,7 +2,7 @@ LCH = LCH or {}
 local LCH = LCH
 
 LCH.name     = "LucentCitadelHelper"
-LCH.version  = "0.0.3"
+LCH.version  = "0.0.4"
 LCH.author   = "@necco889"
 LCH.active   = false
 
@@ -12,15 +12,14 @@ LCH.status = {
   lastCombatState = false,
   
   currentBoss = "",
-  isLylanar = false,
-  isTurlassil = false,
-  isReefGuardian = false,
-  isTaleria = false,
+
+  isZilyesset = false,
+  isCavotAgnan = false,
+  isOrphicShard = false,
+  isArcaneKnot = false,
   isHMBoss = false,
-  
+
   isKnotActive = false,
-
-
 
   locked = true,
   
@@ -30,6 +29,7 @@ LCH.settings = {
   -- Ryelaz & Zilyesset
   showSheerAlert = true,
   showBeamOnYou = true,
+  showBossHpDiff = true,
 
   --Cavot Agnan
 
@@ -113,6 +113,7 @@ function LCH.EffectChanged(eventCode, changeType, effectSlot, effectName, unitTa
   --Xoryn
   elseif abilityId == data.arcane_knot_debuff then
     if changeType == EFFECT_RESULT_GAINED then
+      LCH.status.isArcaneKnot = true
       LCH.status.isKnotActive = true
       LCH.Xoryn.OnKnotPick(endTime)
     elseif changeType == EFFECT_RESULT_FADED then
@@ -137,6 +138,8 @@ function LCH.CombatEvent(eventCode, result, isError, abilityName, abilityGraphic
   elseif abilityId == LCH.data.xoryn_thunder_thrall and result == ACTION_RESULT_BEGIN then
     LCH.Orphic.XorynJump()
   elseif abilityId == LCH.data.xoryn_lightning_flood and result == ACTION_RESULT_BEGIN then
+    LCH.Orphic.XorynFlood()
+  elseif abilityId == LCH.data.sentinel_shield_throw_cast and result == ACTION_RESULT_BEGIN then
     LCH.Orphic.XorynFlood()
   elseif abilityId == LCH.data.arcane_conveyance_cast and result == ACTION_RESULT_BEGIN then
     LCH.Xoryn.ArcaneConveyanceCast()
@@ -178,60 +181,65 @@ function LCH.UpdateTick(gameTimeMs)
   LCH.Xoryn.UpdateTick(timeSec)
 --  90 60 40 10
   
-  if IsUnitInCombat("boss1") then
-    if not LCH.status.inCombat then
-      -- If it switched from non-combat to combat, re-check boss names.
-    end
-    LCH.status.inCombat = true
-  end
+  -- if IsUnitInCombat("boss1") then
+  --   if not LCH.status.inCombat then
+  --     -- If it switched from non-combat to combat, re-check boss names.
+  --   end
+  --   LCH.status.inCombat = true
+  -- end
   
-  if LCH.status.inCombat == false then
-    return
-  end
-
-  if LCH.status.isZilyesset then
-    -- LCH.Zilyesset.UpdateTick(timeSec)
-  elseif LCH.status.isCavotAgnan then
-    -- LCH.Orphic.UpdateTick(timeSec)
-  elseif LCH.status.isOrphicShard then
-    LCH.Orphic.UpdateTick(timeSec)
-  elseif LCH.status.isXoryn or LCH.status.isKnotActive then
-    LCH.Xoryn.UpdateTick(timeSec)
-  -- else -- trash
-    -- LCH.Trash.UpdateTick(timeSec)
+  if LCH.status.inCombat then
+    if LCH.status.isZilyesset then
+      LCH.Zilyesset.UpdateTick(timeSec)
+    elseif LCH.status.isCavotAgnan then
+      -- LCH.Orphic.UpdateTick(timeSec)
+    elseif LCH.status.isOrphicShard then
+      LCH.Orphic.UpdateTick(timeSec)
+    elseif LCH.status.isXoryn or LCH.status.isKnotActive then
+      LCH.Xoryn.UpdateTick(timeSec)
+    end
   end
 
 end
 
 function LCH.DeathState(event, unitTag, isDead)
-  if unitTag == "player" and not isDead and not IsUnitInCombat("boss1") then
-    -- I just resurrected, and it was a wipe or we killed the boss.
-    -- Remove all UI
-    LCH.ClearUIOutOfCombat()
-  end
+  -- if unitTag == "player" and not isDead and not IsUnitInCombat("boss1") then
+  --   -- I just resurrected, and it was a wipe or we killed the boss.
+  --   -- Remove all UI
+  --   LCH.ClearUIOutOfCombat()
+  -- end
   -- TODO: Remove from the list of "players in portal" in boss 1 and boss 2.
 end
 
-function LCH.CombatState(eventCode, inCombat)
-  local currentTargetHP, maxTargetHP, effmaxTargetHP = GetUnitPower("boss1", POWERTYPE_HEALTH)
-  -- Do not change combat state if you are dead, or the boss is not full.
-  if currentTargetHP < 0.99*maxTargetHP or IsUnitDead("player") then
-    return
-  end
+function LCH.onCombatEnter()
+  LCH.status.inCombat = true
+  LCH.ResetStatus()
+end
 
-  if not inCombat then LCH.status.isKnotActive = false end
-  
-  -- Do not do anything outside of boss fights.
-  if maxTargetHP == 0 or maxTargetHP == nil then
-    LCH.ClearUIOutOfCombat()
-    return
-  end
+function LCH.onCombatLeave()
+  LCH.status.inCombat = false
+  LCH.status.isKnotActive = false
+  LCH.status.isArcaneKnot = false
+  LCH.ClearUIOutOfCombat()
+end
+
+function LCH.CombatState(eventCode, inCombat)
+  -- local currentTargetHP, maxTargetHP, effmaxTargetHP = GetUnitPower("boss1", POWERTYPE_HEALTH)
+  -- Do not change combat state if you are dead, or the boss is not full.
+  -- if
+  -- if currentTargetHP < 0.99*maxTargetHP or IsUnitDead("player") then
+    -- return
+  -- end
+
+  -- -- Do not do anything outside of boss fights.
+  -- if maxTargetHP == 0 or maxTargetHP == nil then
+  --   LCH.ClearUIOutOfCombat()
+  --   return
+  -- end
   if inCombat then
-    LCH.status.inCombat = true
-    LCH.ResetStatus()
+    LCH.onCombatEnter()
   else
-    LCH.status.isKnotActive = false
-    LCH.ClearUIOutOfCombat()
+    LCH.onCombatLeave()
   end
   
   LCH.Xoryn.OnCombatStateChange(LCH.status.lastCombatState, inCombat)
@@ -272,8 +280,6 @@ function LCH.HandleBossesChanged(bossName)
   -- end
   LCH.status.currentBoss = bossName
 
-
-
   LCH.status.isZilyesset = false
   LCH.status.isCavotAgnan = false
   LCH.status.isOrphicShard = false
@@ -292,6 +298,7 @@ function LCH.HandleBossesChanged(bossName)
   local currentTargetHP, maxTargetHP, effmaxTargetHP = GetUnitPower("boss1", POWERTYPE_HEALTH)
   local hardmodeHealth = {
     [LCH.data.zilyesset] = 29000000, -- vet both 28M, HM ??M
+    [LCH.data.count_ryelaz] = 29000000, -- vet both 28M, HM ??M
     [LCH.data.cavot_agnan] = 42000000,  -- vet 41M, HM ??M
     [LCH.data.orphic_shattered_shard] = 67000000, -- vet 65M HM ??M
     [LCH.data.xoryn] = 60000000, -- vet: 58M HM ??M
@@ -314,12 +321,8 @@ function LCH.HandleBossesChanged(bossName)
     LCH.Orphic.AddMirrorNumbers()
   elseif string.match(bossName, LCH.data.xoryn) then
     LCH.status.isXoryn = true
-    -- Only draw if the boss changed, or it keeps re-drawing in the Reef Guardian fight.
-    -- if LCH.status.isHMBoss then 
-    --   LCH.ReefGuardian.DrawStratIcons()
-    -- end
   else
-    -- LCH.ReefGuardian.ClearStratIcons()
+    -- 
   end
 
 end

@@ -4,8 +4,8 @@ local LCH = LCH
 LCH.data    = {
 
 
-  lucentCitadelId = 1478,
-  -- lucentCitadelId = 1233, --alpine gallery
+  -- lucentCitadelId = 1478,
+  lucentCitadelId = 1233, --alpine gallery
 
 
   --Trash
@@ -17,6 +17,16 @@ LCH.data    = {
   bleak_lusterbeam = 214254,      --debuff adds on rakkat side
   brilliant_lusterbeam = 214237,  --debuff adds on scorpion side
 
+  -- bounds of light side
+  -- up   right 127997 33500 130624
+  -- down right 128367 33500 133738
+  -- up   left  122049 33500 130710
+  -- down left  122234 33500 133954
+  light_side_min_x =  122234,
+  light_side_max_x =  122234,
+  light_side_min_z =  130624,
+  light_side_max_z =  133954,
+
   -- Orphic Shard
   mirror_drain = 214784,
   orphic_boss_light_imm = 219444,
@@ -25,6 +35,7 @@ LCH.data    = {
   orphic_adds_dark_imm = 219424,
   xoryn_thunder_thrall = 214383,
   xoryn_lightning_flood = 214355,
+  sentinel_shield_throw_cast = 221945,
 
 
   -- last phase

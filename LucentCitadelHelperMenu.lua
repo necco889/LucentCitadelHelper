@@ -74,6 +74,13 @@ function LCH.Menu.AddonMenu()
       getFunc = function() return LCH.savedVariables.showBeamOnYou end,
       setFunc = function(newValue) LCH.savedVariables.showBeamOnYou = newValue end,
     },
+    {
+      type    = "checkbox",
+      name    = "Panel: Show HP difference",
+      default = true,
+      getFunc = function() return LCH.savedVariables.showBossHpDiff end,
+      setFunc = function(newValue) LCH.savedVariables.showBossHpDiff = newValue end,
+    },
     
     -- {
     --   type = "divider",

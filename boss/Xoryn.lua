@@ -74,7 +74,7 @@ end
 
 function LCH.Xoryn.UpdateTick(timeSec)
 
-  if not LCH.status.isKnotActive and data.knot_counter == 0 then return end
+  if not LCH.status.isArcaneKnot then return end
 
   local dropsIn = data.knot_will_drop_at - timeSec
   if dropsIn < 0 then dropsIn = 0 end

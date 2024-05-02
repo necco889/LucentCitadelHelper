@@ -81,7 +81,6 @@ function LCH.UnlockUI(unlock)
 end
 
 function LCH.ClearUIOutOfCombat()
-  LCH.status.inCombat = false
 
   -- Calls here Hide icons, if needed.
 
@@ -105,6 +104,11 @@ function LCH.HideAllUI(hide)
   
   -- Generic
   LCHStatusLabelTop:SetHidden(hide)
+
+
+  -- Zilyesset
+  LCHStatusLabelBossHpDiff:SetHidden(hide)
+  LCHStatusLabelBossHpDiffValue:SetHidden(hide)
 
 
   -- Orphic

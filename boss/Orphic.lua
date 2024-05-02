@@ -76,6 +76,11 @@ function LCH.Orphic.XorynFlood()
   data.last_flood_at = GetGameTimeSeconds()
 end
 
+function LCH.Orphic.ShieldThrow()
+  CombatAlerts.Alert("", "Shield throw", 0xCC1111FF, nil, 1500)
+  -- CombatAlerts.AlertCast( LCH.data.sentinel_shield_throw_cast, nil, 1500, { 300, 0, false, { 0.7, 0.2, 0.2, 0.6 }, { 0.8, 0.1, 0.1, 1 } })
+end
+
 function LCH.Orphic.Hindered(result, targetUnitId, hitValue)
   -- EFFECT_GAINED_DURATION 12000
   local isDPS, isHeal, isTank = GetPlayerRoles()

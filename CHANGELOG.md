@@ -1,14 +1,20 @@
-0.0.3
+## 0.0.4
+ - Zilyesset: Position check for meteor alert
+ - Zilyesset: Boss percentage difference tracker
+ - Arcane Knot: fight detection reworked
+ - Orphic Shattered Shard: shield throw alert
+
+## 0.0.3
 - Fixed flood tracker stuck on screen
 - Removed sound from banner alerts
 - Removed boss change debug message from chat
 - KNOWN ISSUE: Knot timer messed up on start
 - KNOWN ISSUE: Trash: Darkness on you notification not working
 
-0.0.2
+## 0.0.2
 - Orphic Shattered Shard: Xoryn lightning flood timer and alert
 
-0.0.1
+## 0.0.1
 - Initial version
 - Zilyesset: sheer (meteors)
 - Zilyesset: beam on you
