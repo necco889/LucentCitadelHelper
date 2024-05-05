@@ -1,3 +1,14 @@
+## 0.0.5
+ - Zilyesset: Fixed coordinates
+ - Orphic Shattered Shard: Heavy shock alert
+ - Orphic Shattered Shard: Hindered icon
+ - Arcane Knot: Prevent knot counter increase on start
+ - Xoryn: Weakening charge debuff tracker
+ - Xoryn: Chain lightning timer and alert
+ - Trash: Crushing shards
+ - Trash: Radiance (enemy immune)
+
+
 ## 0.0.4
  - Zilyesset: Position check for meteor alert
  - Zilyesset: Boss percentage difference tracker

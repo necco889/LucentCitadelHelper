@@ -123,16 +123,22 @@ function LCH.HideAllUI(hide)
   LCHStatusLabelDarkAddsValue:SetHidden(hide)
   LCHStatusLabelXorynJump:SetHidden(hide)
   LCHStatusLabelXorynJumpValue:SetHidden(hide)
+  LCHStatusLabelXorynFlood:SetHidden(hide)
+  LCHStatusLabelXorynFloodValue:SetHidden(hide)
 
 
 
-  -- Xoryn
+  -- Arcane Knot
   LCHStatusLabelKnotTimer:SetHidden(hide)
   LCHStatusLabelKnotTimerValue:SetHidden(hide)
   LCHStatusLabelKnotCounter:SetHidden(hide)
   LCHStatusLabelKnotCounterValue:SetHidden(hide)
-  LCHStatusLabelXorynFlood:SetHidden(hide)
-  LCHStatusLabelXorynFloodValue:SetHidden(hide)
+
+  -- Xoryn
+  LCHStatusLabelWeakeningCharge:SetHidden(hide)
+  LCHStatusLabelWeakeningChargeValue:SetHidden(hide)
+  LCHStatusLabelAcceleratingCharge:SetHidden(hide)
+  LCHStatusLabelAcceleratingChargeValue:SetHidden(hide)
 
 end
 

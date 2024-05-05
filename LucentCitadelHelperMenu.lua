@@ -154,6 +154,14 @@ function LCH.Menu.AddonMenu()
       getFunc = function() return LCH.savedVariables.showXorynFloodTimer end,
       setFunc = function(newValue) LCH.savedVariables.showXorynFloodTimer = newValue end,
     },
+    {
+      type    = "checkbox",
+      name    = "(healer only) Icon on tank: Hindered",
+      default = true,
+      getFunc = function() return LCH.savedVariables.showHinderedIcon end,
+      setFunc = function(newValue) LCH.savedVariables.showHinderedIcon = newValue end,
+      warning = requiresOSI
+    },
     
     {
       type = "divider",
@@ -198,6 +206,20 @@ function LCH.Menu.AddonMenu()
       getFunc = function() return LCH.savedVariables.showArcaneConveyanceOnYou end,
       setFunc = function(newValue) LCH.savedVariables.showArcaneConveyanceOnYou = newValue end,
     },
+    {
+      type    = "checkbox",
+      name    = "Panel: Weakening charge tracker",
+      default = true,
+      getFunc = function() return LCH.savedVariables.showWeakeningCharge end,
+      setFunc = function(newValue) LCH.savedVariables.showWeakeningCharge = newValue end,
+    },
+    {
+      type    = "checkbox",
+      name    = "Panel: Accelerating charge cast tracker",
+      default = true,
+      getFunc = function() return LCH.savedVariables.showAcceleratingCharge end,
+      setFunc = function(newValue) LCH.savedVariables.showAcceleratingCharge = newValue end,
+    },
 
     {
       type = "divider",
@@ -228,6 +250,13 @@ function LCH.Menu.AddonMenu()
       default = true,
       getFunc = function() return LCH.savedVariables.showNecroticRain end,
       setFunc = function(newValue) LCH.savedVariables.showNecroticRain = newValue end,
+    },
+    {
+      type    = "checkbox",
+      name    = "Radiance (immune to damage)",
+      default = true,
+      getFunc = function() return LCH.savedVariables.showRadiance end,
+      setFunc = function(newValue) LCH.savedVariables.showRadiance = newValue end,
     },
     {
       type = "divider",

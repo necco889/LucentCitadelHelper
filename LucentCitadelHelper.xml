@@ -126,7 +126,7 @@
       </Label>
 
 
-    <!-- Boss Xoryn -->
+    <!-- Arcane Knot / Boss Xoryn -->
       <Label name="$(parent)LabelKnotTimer" font="ZoFontWinH1" color="FFD666" text="Knot timer:" verticalAlignment="CENTER" horizontalAlignment="LEFT"  alpha="0.85">
           <Dimensions x="600" y="50" />
           <Anchor point="CENTER"  relativeTo="$(parent)" relativePoint="CENTER" offsetY="0"/>
@@ -144,6 +144,26 @@
           <Dimensions x="600" y="50" />
           <Anchor point="CENTER"  relativeTo="$(parent)" relativePoint="CENTER" offsetY="40" offsetX="230"/>
       </Label>
+
+      <Label name="$(parent)LabelWeakeningCharge" font="ZoFontWinH1" color="9532a8" text="Weakening:" verticalAlignment="CENTER" horizontalAlignment="LEFT"  alpha="0.85">
+          <Dimensions x="600" y="50" />
+          <Anchor point="CENTER"  relativeTo="$(parent)" relativePoint="CENTER" offsetY="80"/>
+      </Label>
+      <Label name="$(parent)LabelWeakeningChargeValue" font="ZoFontWinH1" color="9532a8" text="-" verticalAlignment="CENTER" horizontalAlignment="LEFT"  alpha="0.85">
+          <Dimensions x="600" y="50" />
+          <Anchor point="CENTER"  relativeTo="$(parent)" relativePoint="CENTER" offsetY="80" offsetX="230"/>
+      </Label>
+
+      <Label name="$(parent)LabelAcceleratingCharge" font="ZoFontWinH1" color="345eeb" text="Lightning in:" verticalAlignment="CENTER" horizontalAlignment="LEFT"  alpha="0.85">
+          <Dimensions x="600" y="50" />
+          <Anchor point="CENTER"  relativeTo="$(parent)" relativePoint="CENTER" offsetY="120"/>
+      </Label>
+      <Label name="$(parent)LabelAcceleratingChargeValue" font="ZoFontWinH1" color="345eeb" text="-" verticalAlignment="CENTER" horizontalAlignment="LEFT"  alpha="0.85">
+          <Dimensions x="600" y="50" />
+          <Anchor point="CENTER"  relativeTo="$(parent)" relativePoint="CENTER" offsetY="120" offsetX="230"/>
+      </Label>
+
+
     </Controls>
     </TopLevelControl>
 

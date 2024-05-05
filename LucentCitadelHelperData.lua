@@ -4,13 +4,15 @@ local LCH = LCH
 LCH.data    = {
 
 
-  -- lucentCitadelId = 1478,
-  lucentCitadelId = 1233, --alpine gallery
+  lucentCitadelId = 1478,
+  -- lucentCitadelId = 1233, --alpine gallery
 
 
   --Trash
   darkness_inflicted = 214338,
   necrotic_rain = 222809,
+  crushing_shards = 219793,
+  radiance = 222527,
 
   --Zilyesset
   count_ryelaz_sheer = 218274,    --meteors
@@ -22,8 +24,8 @@ LCH.data    = {
   -- down right 128367 33500 133738
   -- up   left  122049 33500 130710
   -- down left  122234 33500 133954
-  light_side_min_x =  122234,
-  light_side_max_x =  122234,
+  light_side_min_x =  122049,
+  light_side_max_x =  128367,
   light_side_min_z =  130624,
   light_side_max_z =  133954,
 
@@ -36,11 +38,15 @@ LCH.data    = {
   xoryn_thunder_thrall = 214383,
   xoryn_lightning_flood = 214355,
   sentinel_shield_throw_cast = 221945,
+  xoryn_heavy_shock_cast = 222071,
+  orphic_hindered_effect = 165972,
 
 
   -- last phase
   arcane_conveyance_cast = 223024,
   arcane_conveyance_debuff = 223060,
+  weakening_charge = 222613,
+  accelerating_charge_cast = 214542,
 
 
   orphic_mirror_positions = {

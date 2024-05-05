@@ -2,7 +2,7 @@ LCH = LCH or {}
 local LCH = LCH
 
 LCH.name     = "LucentCitadelHelper"
-LCH.version  = "0.0.4"
+LCH.version  = "0.0.5"
 LCH.author   = "@necco889"
 LCH.active   = false
 
@@ -42,19 +42,23 @@ LCH.settings = {
   showXorynJumpTimer = true,
   showXorynJumpAlert = true,
   showXorynFloodTimer = true,
-
+  showHinderedIcon = true,
+  
   --Arcane Knot
   showKnotDropTimer = true,
   showPickUpKnotAlert = true,
   showKnotCounter = true,
   showArcaneConveyanceIncoming = true,
   showArcaneConveyanceOnYou = true,
+  showWeakeningCharge = true,
+  showAcceleratingCharge = true,
 
   --Trash
   showDarknessOnYou = true,
   showDarknessArrows = true,
   showNecroticRain = true,
-
+  showRadiance = true,
+  
   -- Misc
   uiCustomScale = 1,
   messageFontSize = 72,
@@ -107,17 +111,15 @@ function LCH.EffectChanged(eventCode, changeType, effectSlot, effectName, unitTa
     elseif changeType == EFFECT_RESULT_FADED then
       LCH.Orphic.DarkImmunityOnAdd(false, unitId)
     end
-    
 
-
-  --Xoryn
+  --Arcane Knot / Xoryn
   elseif abilityId == data.arcane_knot_debuff then
     if changeType == EFFECT_RESULT_GAINED then
       LCH.status.isArcaneKnot = true
       LCH.status.isKnotActive = true
-      LCH.Xoryn.OnKnotPick(endTime)
+      LCH.Xoryn.OnKnotPick(endTime, unitName)
     elseif changeType == EFFECT_RESULT_FADED then
-      LCH.Xoryn.OnKnotDrop()
+      LCH.Xoryn.OnKnotDrop(unitName)
     end
   elseif abilityId == data.arcane_conveyance_debuff then
     if changeType == EFFECT_RESULT_GAINED then
@@ -125,35 +127,44 @@ function LCH.EffectChanged(eventCode, changeType, effectSlot, effectName, unitTa
     elseif changeType == EFFECT_RESULT_FADED then
       LCH.Xoryn.ArcaneConveyanceDebuff(unitTag, false)
     end
+  elseif abilityId == data.weakening_charge then
+    if changeType == EFFECT_RESULT_GAINED and unitTag == "player" then
+      LCH.Xoryn.WeakeningChargeDebuff(true, endTime)
+    elseif changeType == EFFECT_RESULT_FADED then
+      LCH.Xoryn.WeakeningChargeDebuff(false, 0)
+    end
   end
  
 end
 
 function LCH.CombatEvent(eventCode, result, isError, abilityName, abilityGraphic, abilityActionSlotType, sourceName, sourceType, targetName, targetType, hitValue, powerType, damageType, log, sourceUnitId, targetUnitId, abilityId, overflow)
+  local data = LCH.data
   -- All Trash combat events are handled separately.
   LCH.Trash.CombatEvent(result, abilityId, targetType, targetUnitId, sourceName, hitValue)
 
-  if abilityId == LCH.data.count_ryelaz_sheer and result == ACTION_RESULT_BEGIN then
+  if abilityId == data.count_ryelaz_sheer and result == ACTION_RESULT_BEGIN then
     LCH.Zilyesset.Sheer()
-  elseif abilityId == LCH.data.xoryn_thunder_thrall and result == ACTION_RESULT_BEGIN then
+
+
+  elseif abilityId == data.xoryn_thunder_thrall and result == ACTION_RESULT_BEGIN then
     LCH.Orphic.XorynJump()
-  elseif abilityId == LCH.data.xoryn_lightning_flood and result == ACTION_RESULT_BEGIN then
+  elseif abilityId == data.xoryn_lightning_flood and result == ACTION_RESULT_BEGIN then
     LCH.Orphic.XorynFlood()
-  elseif abilityId == LCH.data.sentinel_shield_throw_cast and result == ACTION_RESULT_BEGIN then
-    LCH.Orphic.XorynFlood()
-  elseif abilityId == LCH.data.arcane_conveyance_cast and result == ACTION_RESULT_BEGIN then
-    LCH.Xoryn.ArcaneConveyanceCast()
-  end
-
-  if LCH.status.isOrphicShard then
-    if zo_strformat(SI_UNIT_NAME, sourceName) == "Xoryn" then
-      if abilityName == "Heavy Shock" then
-        df("%d %s %d %d %s", result, abilityName, hitValue, abilityId, targetName)
-      end
+  elseif abilityId == data.sentinel_shield_throw_cast and result == ACTION_RESULT_BEGIN then
+    LCH.Orphic.ShieldThrow()
+  elseif abilityId == data.orphic_hindered_effect then
+    LCH.Orphic.Hindered(result, targetUnitId, hitValue)
+  elseif abilityId == data.xoryn_heavy_shock_cast and LCH.status.isOrphicShard then
+    if result == ACTION_RESULT_BEGIN then
+      --currently this event fires only if u are the target
+      CombatAlerts.AlertCast(abilityId, nil, GetAbilityDuration(abilityId))
     end
+
+  elseif abilityId == data.arcane_conveyance_cast and result == ACTION_RESULT_BEGIN then
+    LCH.Xoryn.ArcaneConveyanceCast()
+  elseif abilityId == data.accelerating_charge_cast and result == ACTION_RESULT_BEGIN then
+    LCH.Xoryn.XorynAcceleratingCharge()
   end
-
-
 
 end
 
@@ -270,8 +281,9 @@ function LCH.BossesChanged()
 end
 
 function LCH.HandleBossesChanged(bossName)
-	--local bossName = string.lower(GetUnitName("boss1"))
+	-- local bossName = string.lower(GetUnitName("boss1"))
   -- local bossName = LCH.GetBossName()
+  bossName = string.lower(bossName)
   local lastBossName = LCH.status.currentBoss
   if bossName == nil then return end
 
