@@ -187,6 +187,23 @@ function LCH.Menu.AddonMenu()
     },
     {
       type    = "checkbox",
+      name    = "Alert: Knot dropping in",
+      default = true,
+      getFunc = function() return LCH.savedVariables.showKnotDroppingIn end,
+      setFunc = function(newValue) LCH.savedVariables.showKnotDroppingIn = newValue end,
+    },
+    {
+      type = "slider",
+      name = "Knot dropping in... alert length",
+      min = 0,
+      max = 10,
+      step = 1,
+      default = 3,
+      getFunc = function() return LCH.savedVariables.showKnotDroppingInLen end,
+      setFunc = function(newValue) LCH.savedVariables.showKnotDroppingInLen = newValue end,
+    },
+    {
+      type    = "checkbox",
       name    = "Panel: Knot counter",
       default = true,
       getFunc = function() return LCH.savedVariables.showKnotCounter end,
@@ -205,6 +222,13 @@ function LCH.Menu.AddonMenu()
       default = true,
       getFunc = function() return LCH.savedVariables.showArcaneConveyanceOnYou end,
       setFunc = function(newValue) LCH.savedVariables.showArcaneConveyanceOnYou = newValue end,
+    },
+    {
+      type    = "checkbox",
+      name    = "Alert: Arcane conveyance on (targets)",
+      default = true,
+      getFunc = function() return LCH.savedVariables.showArcaneConveyanceOnTargets end,
+      setFunc = function(newValue) LCH.savedVariables.showArcaneConveyanceOnTargets = newValue end,
     },
     {
       type    = "checkbox",

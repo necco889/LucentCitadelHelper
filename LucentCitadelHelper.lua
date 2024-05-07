@@ -2,7 +2,7 @@ LCH = LCH or {}
 local LCH = LCH
 
 LCH.name     = "LucentCitadelHelper"
-LCH.version  = "0.0.5"
+LCH.version  = "0.0.6"
 LCH.author   = "@necco889"
 LCH.active   = false
 
@@ -48,8 +48,11 @@ LCH.settings = {
   showKnotDropTimer = true,
   showPickUpKnotAlert = true,
   showKnotCounter = true,
+  showKnotDroppingIn = true,
+  showKnotDroppingInLen = 5,
   showArcaneConveyanceIncoming = true,
   showArcaneConveyanceOnYou = true,
+  showArcaneConveyanceOnTargets = true,
   showWeakeningCharge = true,
   showAcceleratingCharge = true,
 
@@ -123,9 +126,9 @@ function LCH.EffectChanged(eventCode, changeType, effectSlot, effectName, unitTa
     end
   elseif abilityId == data.arcane_conveyance_debuff then
     if changeType == EFFECT_RESULT_GAINED then
-      LCH.Xoryn.ArcaneConveyanceDebuff(unitTag, true)
+      LCH.Xoryn.ArcaneConveyanceDebuff(unitTag, unitName, true)
     elseif changeType == EFFECT_RESULT_FADED then
-      LCH.Xoryn.ArcaneConveyanceDebuff(unitTag, false)
+      LCH.Xoryn.ArcaneConveyanceDebuff(unitTag, unitName, false)
     end
   elseif abilityId == data.weakening_charge then
     if changeType == EFFECT_RESULT_GAINED and unitTag == "player" then
@@ -154,7 +157,7 @@ function LCH.CombatEvent(eventCode, result, isError, abilityName, abilityGraphic
     LCH.Orphic.ShieldThrow()
   elseif abilityId == data.orphic_hindered_effect then
     LCH.Orphic.Hindered(result, targetUnitId, hitValue)
-  elseif abilityId == data.xoryn_heavy_shock_cast and LCH.status.isOrphicShard then
+  elseif abilityId == data.xoryn_heavy_shock_cast and LCH.status.isOrphicShard and targetType == COMBAT_UNIT_TYPE_PLAYER then
     if result == ACTION_RESULT_BEGIN then
       --currently this event fires only if u are the target
       CombatAlerts.AlertCast(abilityId, nil, GetAbilityDuration(abilityId))

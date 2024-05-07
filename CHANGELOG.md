@@ -1,3 +1,10 @@
+## 0.0.6
+- Orphic Shattered Shard: Heavy shock alert only on target
+- Arcane Knot: Workaround for fake drop event
+- Arcane Knot: Reduced alert duration for incoming arcane conveyance to 3s
+- Arcane Knot: Countdown for knot dropping with variable alert duration
+- Arcane Knot: Show the 2 target of arcane conveyance
+
 ## 0.0.5
  - Zilyesset: Fixed coordinates
  - Orphic Shattered Shard: Heavy shock alert

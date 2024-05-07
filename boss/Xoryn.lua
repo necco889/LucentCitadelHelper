@@ -11,6 +11,8 @@ LCH.Xoryn = {
     arcane_conveyance_casted_at = 0,
     arcane_conveyance_on_player = false,
     arcane_conveyance_on_player_at = 0,
+    arcane_conveyance_affected_targets = {},
+    arcane_conveyance_affected_targets_num = 0,
 
     weakening_charge_on_player = false,
     weakening_charge_endtime = 0,
@@ -52,6 +54,8 @@ function LCH.Xoryn.Reset()
 
   data.arcane_conveyance_casted_at = 0
   data.arcane_conveyance_on_player_at = 0
+  data.arcane_conveyance_affected_targets = {}
+  data.arcane_conveyance_affected_targets_num = 0
   data.weakening_charge_on_player = false
   data.weakening_charge_endtime = 0
   data.last_accelerating_charge_at = 0
@@ -76,19 +80,41 @@ end
 
 
 function LCH.Xoryn.OnKnotDrop(unitName)
+  -- filter out fake drop event
+  if data.knot_picked_by ~= unitName then return end
+
   data.knot_will_drop_at = 0
   data.knot_dropped = true
 end
 
 function LCH.Xoryn.ArcaneConveyanceCast()
   data.arcane_conveyance_casted_at = GetGameTimeSeconds()
+  data.arcane_conveyance_affected_targets_num = 0
+  data.arcane_conveyance_affected_targets = {}
 end
 
-function LCH.Xoryn.ArcaneConveyanceDebuff(unitTag, isGain)
+function LCH.Xoryn.ArcaneConveyanceDebuff(unitTag, unitName, isGain)
   if unitTag == "player" then
     data.arcane_conveyance_on_player = isGain
     data.arcane_conveyance_on_player_at = GetGameTimeSeconds()
   end
+  if isGain then
+    data.arcane_conveyance_affected_targets[unitName] = true
+  else
+    data.arcane_conveyance_affected_targets[unitName] = nil
+  end
+
+  data.arcane_conveyance_affected_targets_num = 0
+  local t = {}
+  for k,v in pairs(data.arcane_conveyance_affected_targets) do
+    table.insert(t, k)
+    data.arcane_conveyance_affected_targets_num = data.arcane_conveyance_affected_targets_num + 1
+  end
+
+  if data.arcane_conveyance_affected_targets_num == 2 and not data.arcane_conveyance_on_player and LCH.savedVariables.showArcaneConveyanceOnTargets then
+    CombatAlerts.Alert("", string.format("Arcane conveyance on %s - %s", t[1], t[2]), 0xfcba03ff, nil, 1500)
+  end
+
 end
 
 function LCH.Xoryn.WeakeningChargeDebuff(isGain, endTime)
@@ -119,6 +145,10 @@ function LCH.Xoryn.UpdateTick(timeSec)
     LCHMessage1Label:SetText("Pick up knot!")
     LCHMessage1:SetHidden(not LCH.savedVariables.showPickUpKnotAlert)
     LCHMessage1Label:SetHidden(not LCH.savedVariables.showPickUpKnotAlert)
+  elseif dropsIn > 0 and dropsIn <= LCH.savedVariables.showKnotDroppingInLen then
+    LCHMessage1Label:SetText(string.format("Knot will drop in %.0f", dropsIn))
+    LCHMessage1:SetHidden(not LCH.savedVariables.showKnotDroppingIn)
+    LCHMessage1Label:SetHidden(not LCH.savedVariables.showKnotDroppingIn)
   else
     LCHMessage1:SetHidden(true)
     LCHMessage1Label:SetHidden(true)
@@ -136,7 +166,7 @@ function LCH.Xoryn.UpdateTick(timeSec)
       LCHMessage2:SetHidden(true)
       LCHMessage2Label:SetHidden(true)
     end
-  elseif arcane_conveyance_in > 0 and arcane_conveyance_in < 7 then
+  elseif arcane_conveyance_in > 0 and arcane_conveyance_in < 3 then
     LCHMessage2Label:SetText("Arcane Conveyance in " .. string.format("%.0f s", arcane_conveyance_in))
     LCHMessage2:SetHidden(not LCH.savedVariables.showArcaneConveyanceIncoming)
     LCHMessage2Label:SetHidden(not LCH.savedVariables.showArcaneConveyanceIncoming)
